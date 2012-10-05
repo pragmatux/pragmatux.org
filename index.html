@@ -14,19 +14,24 @@
 	<meta name="author" content="">
 
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="./css/iconic/iconic_fill.css">
 	<link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" href="./bootstrap/css/bootstrap-responsive.css">
 	<link rel="stylesheet" href="./css/main.css">
 
-	<script src="js/libs/modernizr-2.5.3.min.js"></script>
+	<!-- // <script src="js/libs/modernizr-2.5.3.min.js"></script> -->
 </head>
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
 <div class="header">
 	<div class="container phone-pad">
-		<img class="pull-left" src="./img/pragmatux.png" alt="Pragmatic Embedded Linux">
-		<h1 class="logo">Pragma<span class="f-normal">tux</span></h1>
+		<a class="block" href="http://pragmatux.com">
+			<img class="pull-left" src="./img/pragmatux.png" alt="Pragmatic Embedded Linux">
+			<h1 class="logo pull-left">Pragma<span class="f-normal">tux</span></h1>
+		</a>
+
+		<a class="nav pull-right" href="./documentation.html"><i class="iconic book_alt2"></i> Documentation</a>
 	</div>
 </div>
 
@@ -52,80 +57,104 @@
 		</div>
 
 		<div class="row-fluid">
-			<div class="span4 phone-pad">
-				<h3>An Embedded Linux Distribution</h3>
-				<p>
-					Why should desktops and servers have
-					all the fun? Embedded systems that run
-					Linux also need robust software,
-					development tools, and configuration
-					management.  Pragmatux adopts and
-					extends Debian's core infrastructure
-					and techniques, and uses them across a
-					broad range of target devices.
-					Recompiling the whole world just to
-					make changes to a filesystem image
-					never made sense in a workstation
-					environment—and it doesn't make
-					sense in embedded work, either.
-				</p>
+			<div class="sell span6">
+				<div class="phone-pad">
+					<h3>An Embedded Linux Distribution</h3>
+					<p>
+						Why should desktops and servers have
+						all the fun? Embedded systems that run
+						Linux also need robust software,
+						development tools, and configuration
+						management.  Pragmatux adopts and
+						extends Debian's core infrastructure
+						and techniques, and uses them across a
+						broad range of target devices.
+						Recompiling the whole world just to
+						make changes to a filesystem image
+						never made sense in a workstation
+						environment—and it doesn't make
+						sense in embedded work, either.
+					</p>
+				</div>
+
+				<div class="phone-pad">
+					<h3>Production-Grade Workflow</h3>
+					<p>
+						With Pragmatux, any Debian-based
+						workstation is just two commands away
+						from being a fully-capable embedded
+						Linux development workstation.  A third
+						command creates an entire
+						target device filesystem, in seconds.
+						Both environments are fully
+						package-managed, giving you
+						fine-grained control of both content
+						and configuration even after product
+						deployment: developer workstations can
+						be centrally-managed if desired, and
+						target devices can "phone home" in a
+						variety of ways for software package
+						updates.  And the tools we use are the
+						very same ones used by Debian itself,
+						so you are always compatible and
+						up-to-date with the latest community
+						developments.
+					</p>
+				</div>	
+
+				<div class="phone-pad">
+					<h3>Coming Soon</h3>
+					<p>
+						After proving the concept in over four years of
+						active commercial product development, the
+						Pragmatux project is releasing the Pragmatux
+						operating system to the greater embedded Linux
+						community.  Pragmatux is not "beta", and the
+						core assets are already available to the public
+						(and have been for more than a year).  Watch
+						this space in the coming days for finished
+						versions of internal documents, case studies,
+						blog posts, mailing lists, and tutorials
+						describing how to set up, use, and adapt
+						Pragmatux for your needs and devices.
+						Pragmatux brings the platform—so
+						so you can focus on the problem.
+					</p>
+				</div>	
+			</div><!-- sell -->
+
+			<div class="news span6">
+				<h2>Recent News</h2>
+				<div class="news-item">
+					<h4>New Documentation</h4>
+					<p>
+						Nulla vitae elit libero, a pharetra augue. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean lacinia bibendum nulla sed consectetur. Maecenas faucibus mollis interdum.
+
+						Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.	
+					</p>
+				</div>
+
+				<div class="news-item">
+					<h4>Best Thing Since PHP</h4>
+					<p>
+						Nulla vitae elit libero, a pharetra augue. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean lacinia bibendum nulla sed consectetur. Maecenas faucibus mollis interdum.
+
+						Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.	
+					</p>	
+				</div>
 			</div>
+		</div><!-- row -->
 
-			<div class="span4 phone-pad">
-				<h3>Production-Grade Workflow</h3>
-				<p>
-					With Pragmatux, any Debian-based
-					workstation is just two commands away
-					from being a fully-capable embedded
-					Linux development workstation.  A third
-					command creates an entire
-					target device filesystem, in seconds.
-					Both environments are fully
-					package-managed, giving you
-					fine-grained control of both content
-					and configuration even after product
-					deployment: developer workstations can
-					be centrally-managed if desired, and
-					target devices can "phone home" in a
-					variety of ways for software package
-					updates.  And the tools we use are the
-					very same ones used by Debian itself,
-					so you are always compatible and
-					up-to-date with the latest community
-					developments.
-				</p>
-			</div>	
-
-			<div class="span4 phone-pad">
-				<h3>Coming Soon</h3>
-				<p>
-					After proving the concept in over four years of
-					active commercial product development, the
-					Pragmatux project is releasing the Pragmatux
-					operating system to the greater embedded Linux
-					community.  Pragmatux is not "beta", and the
-					core assets are already available to the public
-					(and have been for more than a year).  Watch
-					this space in the coming days for finished
-					versions of internal documents, case studies,
-					blog posts, mailing lists, and tutorials
-					describing how to set up, use, and adapt
-					Pragmatux for your needs and devices.
-					Pragmatux brings the platform—so
-					so you can focus on the problem.
-				</p>
-
-			</div>	
-		</div>
-
-		<div class="footer">
-			<p>Copyright © 2012 The Pragmatux Project</p>
-		</div>
 	</div>
 </div>
 
+<div class="footer">
+	<div class="container">
+		<p>Copyright © 2012 The Pragmatux Project</p>
+	</div>
+</div>
 
-
+<!--
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
 
@@ -136,7 +165,6 @@
 	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 	s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
-
-
-
-</body></html>
+-->
+</body>
+</html>
