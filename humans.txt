@@ -3,13 +3,13 @@
 
 
 /* TEAM */
-  <your title>: <your name>
-  Site:
+  Designer: Shane Kuester
+  Site: darkgreymedia.com
   Twitter:
-  Location:
+  Location: Chicago, IL
 
 /* THANKS */
-  Names (& URL):
+  Names (& URL): Ryan Kuester - InSymbols.com
 
 /* SITE */
   Standards: HTML5, CSS3

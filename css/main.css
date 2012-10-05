@@ -64,12 +64,12 @@ a.block, a.block:hover {
 	background:#ddd;
 	border-top:1px solid #efefef;
 
-	background: -moz-linear-gradient(top, rgba(221,221,221,0.65) 0%, rgba(221,221,221,0) 60%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(221,221,221,0.65)), color-stop(60%,rgba(221,221,221,0))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 60%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 60%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 60%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 60%); /* W3C */
+	background: -moz-linear-gradient(top, rgba(221,221,221,0.65) 0%, rgba(221,221,221,0) 70%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(221,221,221,0.65)), color-stop(70%,rgba(221,221,221,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 70%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 70%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 70%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 70%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6dddddd', endColorstr='#00dddddd',GradientType=0 ); /* IE6-9 */	
 }
 
@@ -120,6 +120,13 @@ a.block, a.block:hover {
 .news h2 {
 	padding-bottom:.5em;
 	border-bottom: 1px dashed #ccc;
+}
+
+.mailinglist-icon {
+	color: #3785C7;
+	font-size:1.5em;
+	vertical-align: sub;
+	margin-right: 10px;
 }
 
 /* ----------------- */
