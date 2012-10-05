@@ -137,6 +137,38 @@ a.block, a.block:hover {
 	margin-right: 1em;
 }
 
+/* ------------------- */
+.doc {
+	padding: 2em;
+	font-family: Georgia, serif;
+	font-size: 16px;
+	line-height: 2em;
+
+	border-top:1px solid #efefef;
+	background: -moz-linear-gradient(top, rgba(221,221,221,0.65) 0%, rgba(221,221,221,0) 5%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(221,221,221,0.65)), color-stop(5%,rgba(221,221,221,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 5%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 5%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 5%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(221,221,221,0.65) 0%,rgba(221,221,221,0) 5%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6dddddd', endColorstr='#00dddddd',GradientType=0 ); /* IE6-9 */	
+
+}
+
+.doc .header {
+	border-bottom: 0;
+}
+
+.doc p,
+.doc pre {
+	margin-bottom: 2em;
+}
+
+.doc h2 {
+	font-size: 1.8em;
+	margin-bottom: 1.2em;
+}
+
 /* ----------------- */
 
 /*phone*/
