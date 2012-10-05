@@ -122,7 +122,13 @@ a.block, a.block:hover {
 	border-bottom: 1px dashed #ccc;
 }
 
-.mailinglist-icon {
+.mailing-list {
+	margin-top:2em;
+	padding-top:.5em;
+	border-top: 1px dashed #ccc;
+}
+
+.mailing-list-icon {
 	color: #3785C7;
 	font-size:1.5em;
 	vertical-align: sub;
