@@ -1,0 +1,123 @@
+{{ include:/_fragments/open }}
+{{ include:/_fragments/header }}
+
+<div class="main">
+	<div class="container" role="main">
+		<div class="row">
+			<div class="span3 offset1 hero t-center">
+				<img src="./img/embedded_linux.png" alt="Pragmatic Embedded Linux">
+			</div>
+
+			<div class="span7 hero hero-text">
+				<h2>A community-developed Linux distribution for <strong>embedded systems</strong></h2>
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="sell span6">
+				<div class="phone-pad">
+					<h3>An Embedded Linux Distribution</h3>
+					<p>
+						Why should desktops and servers have
+						all the fun? Embedded systems that run
+						Linux also need robust software,
+						development tools, and configuration
+						management.  Pragmatux adopts and
+						extends Debian's core infrastructure
+						and techniques, and uses them across a
+						broad range of target devices.
+						Recompiling the whole world just to
+						make changes to a filesystem image
+						never made sense in a workstation
+						environment&mdash;and it doesn't make
+						sense in embedded work, either.
+					</p>
+				</div>
+
+				<div class="phone-pad">
+					<h3>Production-Grade Workflow</h3>
+					<p>
+						With Pragmatux, any Debian-based
+						workstation is just two commands away
+						from being a fully-capable embedded
+						Linux development workstation.  A third
+						command creates an entire
+						target device filesystem, in seconds.
+						Both environments are fully
+						package-managed, giving you
+						fine-grained control of both content
+						and configuration even after product
+						deployment: developer workstations can
+						be centrally-managed if desired, and
+						target devices can "phone home" in a
+						variety of ways for software package
+						updates.  And the tools we use are the
+						very same ones used by Debian itself,
+						so you are always compatible and
+						up-to-date with the latest community
+						developments.
+					</p>
+				</div>	
+
+				<div class="phone-pad">
+					<h3>Coming Soon</h3>
+					<p>
+						After proving the concept in over four years of
+						active commercial product development, the
+						Pragmatux project is releasing the Pragmatux
+						operating system to the greater embedded Linux
+						community.  Pragmatux is not "beta", and the
+						core assets are already available to the public
+						(and have been for more than a year).  Watch
+						this space in the coming days for finished
+						versions of internal documents, case studies,
+						blog posts, mailing lists, and tutorials
+						describing how to set up, use, and adapt
+						Pragmatux for your needs and devices.
+						Pragmatux brings the platform&mdash;so
+						you can focus on the problem.
+					</p>
+				</div>	
+
+			</div><!-- sell -->
+
+			<div class="news span6">
+				<div class="news-item">
+					<h3>Documentation Posted</h3>
+					<p>
+						A first document has been
+						posted: the <a
+						href="docs/quick-start-db8060.html">Quick-Start
+						Guide for DragonBoard&trade;
+						8060</a>, which walks through
+						setup of a workstation and
+						getting first light on the <a
+						href="http://mydragonboard.org">DragonBoard</a>,
+						the first publicly-available
+						Pragmatux target.
+					</p>
+				</div>
+
+				<div class="mailing-list">
+					<h3><i class="iconic mail mailing-list-icon"></i> Join the Mailing List</h3>
+					<p>
+						Join the discussion among
+						Pragmatux users and developers
+						at the <a
+						href="mailto:pragmatux-users-request@lists.pragmatux.org?subject=subscribe">pragmatux-users</a>
+						mailing list. A separate, low-volume <a
+						href="mailto:pragmatux-announce-request@lists.pragmatux.org?subject=subscribe">pragmatux-announce</a>
+						mailing list receives only
+						announcements of releases and
+						community events.
+					</p>
+				</div>
+			</div>
+
+		</div><!-- row -->
+
+	</div>
+</div>
+
+{{ include:_fragments/footer }}
+{{ include:_fragments/close }}

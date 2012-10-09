@@ -1,0 +1,156 @@
+Quick-Start Guide for the DragonBoard(TM) 8060
+==============================================
+:Author: Ryan Kuester
+:Email: rkuester@insymbols.com
+:Revision: Pre-Release Draft
+
+This is a brief guide to creating a Pragmatux Workstation development
+environment and Pragmatux Device filesystem images for the DragonBoard(TM) 8060
+target. See the more general and thorough link:users-manual.html[Pragmatux
+Users Manual] to learn the magic behind these steps, and consult the
+link:users-manual-db8060.html[Pragmatux Users Manual for DragonBoard(TM) 8060]
+for topics specific to the DragonBoard(TM) 8060.
+
+== Setup a Pragmatux Workstation
+
+The development environment for creating programs, packages, and filesystem 
+images is a desktop, laptop, or server running the Squeeze version of the 
+Debian Linux distribution. That environment is called the 'workstation'.  
+The DragonBoard(TM) is called the 'device'.
+
+The workstation need not be a physical machine; it is common to use a 
+virtual machine or a chroot within another operating system; however, the 
+workstation must be of the 'amd64' architecture.
+
+. Install Debian Squeeze
++
+Begin by http://www.debian.org/releases/squeeze/amd64[installing the Debian 
+Squeeze operating system] on any amd64 architecture machine.
+
+. Add package sources for Pragmatux Workstation
++
+There are several ways of adding package sources to the newly installed Debian
+OS, including GUI tools; but, the simplest way is to create the
+following file:
++
+----
+# filename: /etc/apt/sources.list.d/pragmatux-db8060.list
+deb http://packages.pragmatux.org/workstation alpha main
+deb http://emdebian.org/debian squeeze main
+----
++
+Then have the package management system read the contents of the package
+sources:
++
+....
+# apt-get update
+....
++
+For now, ignore the warning about the inability to verify the authenticity of 
+the Emdebian package repository.
+
+. Install the workstation package tree for DragonBoard(TM) 8060 development
++
+....
+# apt-get install ptux-workstation-db8060
+....
++
+This will install tens of packages containing the tools and code
+libraries essential for cross-development targeting the DragonBoard(TM). Answer 
+``yes'' when prompted whether to continue, despite the warning about the 
+inability to authenticate several of the packages.
+
+== Create device filesystem images
+
+. Optionally set an HTTP proxy (recommended)
++
+....
+$ export http_proxy=http://localhost:3142
+....
+
+. Compose a filesystem containing the default package tree
++
+....
+$ mkdir wrk
+$ cd wrk
+$ mkos-db8060
+....
++
+This will create two files, 'boot.img' containing the kernel and initramfs, and 
+'ptux.img' containing the root filesystem. They will be written to the 
+DragonBoard(TM)'s eMMC storage in subsequent steps.
+
+Without arguments, mkos-db8060 uses a default configuration which names the 
+packages with which to compose the filesystem and the package repositories from 
+which they are downloaded. Projects and individual developers can define their 
+own configurations, which are passed to mkos-db8060 to override the default.
+
+== Write device filesystem images to eMMC storage
+
+. Put DragonBoard(TM) 8060 into 'fastboot' mode
++
+While holding down the #5 key on the keypad, boot the DragonBoard(TM) by 
+cycling power. Release the key shortly thereafter. The DragonBoard(TM) 
+bootloader will pause in fastboot mode, listening to commands from a fastboot 
+client.
+
+. Connect the DragonBoard(TM) USB device port to the workstation and verify 
+connectivity
++
+After making the USB connection and giving workstation a few seconds to 
+enumerate the new device, run the fastboot client to verify connectivity to the 
+bootloader.
++
+....
+# fastboot devices
+....
++
+If the client is able to talk to the bootloader, it will print the serial 
+number of the DragonBoard(TM).
+
+. Write kernel and initramfs to 'boot' partition
++
+Using the fastboot client on the workstation, write the 'boot.img' image 
+containing the kernel and initramfs to the partition named 'boot'.
++
+....
+# fastboot flash boot boot.img
+....
+
+. Write root filesystem image to 'userdata' partition
++
+Using the fastboot client on the workstation, write the 'ptux.img' image 
+containing the root filesystem to the partition named 'userdata'.
++
+....
+# fastboot flash userdata ptux.img
+....
+
+Now the operating system has been installed on DragonBoard(TM) and it is ready 
+to be booted for the first time.
+
+== Boot DragonBoard(TM) for the first time
+
+Before booting DragonBoard(TM) for the first time, connect a serial terminal to 
+the only DE9 port. This port is the system's console, the destination for 
+kernel log messages and a login prompt leading to a command shell. The serial 
+communication parameters are 115200-8-N-1 (115200 bits per second, 8 data bits, 
+no parity bit, and 1 stop bit).
+
+Reset the DragonBoard(TM) by cycling power. Within seconds, the newly installed 
+kernel should boot and write considerable output to the serial console. The 
+very first time the operating system starts, it will go through a minute-long 
+installation procedure and automatically restart the board.
+
+The installation generates much debugging, informational, and warning output 
+due to the unusual state of the system at installation time and the 
+inconsistent use of logging levels by several of packages being installed.  
+While ignoring warnings is normally a bad practice, novice users can safely 
+ignore warnings in this output when installing a default configuration unless 
+the system fails to behave as expected after the after the first boot.
+
+== Operate the DragonBoard(TM)
+
+On the second and all subsequent boots, a login prompt leading to a command 
+shell is offered on the serial port. The only account following a basic 
+installation is 'root' with the password 'password'.

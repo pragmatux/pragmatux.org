@@ -1,0 +1,31 @@
+{{ include:/_fragments/open }}
+{{ include:/_fragments/header }}
+
+<div class="main docs-home">
+	<div class="container phone-pad">
+	<h1>Documentation</h1>
+			<div class="row docs-category">
+				<div class="span10 offset1">
+					<h3>Develop for DragonBoard&trade; 8060</h3>
+					<div class="row">
+						<div class="span1 hidden-phone">
+							<img src="img/dragon_board.jpg" alt="DragonBoard 8060"/>
+						</div>
+						<div class="span9">
+							<p>
+								Develop with Pragmatux on the DragonBoard&trade; 8060 platform.
+								Made and <a href="http://www.bsquare.com/snapdragon-apq8060-based-dragonboard-.aspx">sold
+								by Bsquare</a> and discussed at the <a href="http://mydragonboard.org">myDragonBoard</a> community site,
+								the 8060 is development board designed around the Qualcomm Snapdragon&trade; S3 APQ8060 system-on-chip.
+								<h4><a href="docs/quick-start-db8060.html">Quick-Start Guide</a></h4>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ include:_fragments/footer }}
+{{ include:_fragments/close }}
