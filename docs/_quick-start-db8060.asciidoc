@@ -8,33 +8,35 @@ This is a brief guide to creating a Pragmatux Workstation development
 environment and Pragmatux Device filesystem images for the DragonBoard(TM) 8060
 target. See the more general and thorough link:users-manual.html[Pragmatux
 Users Manual] to learn the magic behind these steps, and consult the
-link:users-manual-db8060.html[Pragmatux Users Manual for DragonBoard(TM) 8060]
-for topics specific to the DragonBoard(TM) 8060.
+link:users-manual-db8060.html[Pragmatux Users Manual for DragonBoard 8060]
+for topics specific to the DragonBoard 8060.
 
 == Setup a Pragmatux Workstation
 
-The development environment for creating programs, packages, and filesystem 
-images is a desktop, laptop, or server running the Squeeze version of the 
-Debian Linux distribution. That environment is called the 'workstation'.  
-The DragonBoard(TM) is called the 'device'.
+The development environment for creating programs, packages, and filesystem
+images is a desktop, laptop, or server running the Squeeze version of the
+Debian Linux distribution. That environment is called the 'workstation'. The
+DragonBoard is called the 'device'.
 
-The workstation need not be a physical machine; it is common to use a 
-virtual machine or a chroot within another operating system; however, the 
-workstation must be of the 'amd64' architecture.
+The workstation need not be a physical machine; it is common to use a
+virtual machine or a chroot within another operating system; however,
+the workstation must be of the 'amd64' architecture.
 
 . Install Debian Squeeze
 +
-Begin by http://www.debian.org/releases/squeeze/amd64[installing the Debian 
-Squeeze operating system] on any amd64 architecture machine.
+Begin by http://www.debian.org/releases/squeeze/amd64[installing the
+Debian Squeeze operating system] on any amd64 architecture machine.
+The following commands are to be run on that machine, unless otherwise 
+stated.
 
 . Add package sources for Pragmatux Workstation
 +
 There are several ways of adding package sources to the newly installed Debian
 OS, including GUI tools; but, the simplest way is to create the
-following file:
+following text file:
 +
 ----
-# filename: /etc/apt/sources.list.d/pragmatux-db8060.list
+# filename: /etc/apt/sources.list.d/pragmatux.list
 deb http://packages.pragmatux.org/workstation alpha main
 deb http://emdebian.org/debian squeeze main
 ----
@@ -49,64 +51,62 @@ sources:
 For now, ignore the warning about the inability to verify the authenticity of 
 the Emdebian package repository.
 
-. Install the workstation package tree for DragonBoard(TM) 8060 development
+. Install the workstation package tree for DragonBoard 8060 development
 +
 ....
 # apt-get install ptux-workstation-db8060
 ....
 +
 This will install tens of packages containing the tools and code
-libraries essential for cross-development targeting the DragonBoard(TM). Answer 
+libraries essential for cross-development targeting the DragonBoard. Answer 
 ``yes'' when prompted whether to continue, despite the warning about the 
 inability to authenticate several of the packages.
 
 == Create device filesystem images
 
-. Optionally set an HTTP proxy (recommended)
-+
-....
-$ export http_proxy=http://localhost:3142
-....
-
-. Compose a filesystem containing the default package tree
+. Compose a filesystem using the default set of packages
 +
 ....
 $ mkdir wrk
 $ cd wrk
-$ mkos-db8060
+$ fakeroot mkos-db8060
 ....
 +
 This will create two files, 'boot.img' containing the kernel and initramfs, and 
 'ptux.img' containing the root filesystem. They will be written to the 
-DragonBoard(TM)'s eMMC storage in subsequent steps.
+DragonBoard's eMMC storage in subsequent steps.
 
-Without arguments, mkos-db8060 uses a default configuration which names the 
-packages with which to compose the filesystem and the package repositories from 
-which they are downloaded. Projects and individual developers can define their 
-own configurations, which are passed to mkos-db8060 to override the default.
+When invoked without arguments, `mkos-db8060` composes a filesystem for the
+DragonBoard using a predefined list of packages. Via arguments, this list
+can be modified and extended to define a customized filesystem for each
+project using DragonBoard.
+
+Packages can be added to and removed from a running device using the
+package management tools which are included in the base image.
 
 == Write device filesystem images to eMMC storage
 
-. Put DragonBoard(TM) 8060 into 'fastboot' mode
+. Put DragonBoard 8060 into 'fastboot' mode
 +
-While holding down the #5 key on the keypad, boot the DragonBoard(TM) by 
-cycling power. Release the key shortly thereafter. The DragonBoard(TM) 
-bootloader will pause in fastboot mode, listening to commands from a fastboot 
-client.
+While holding down the #5 key on the keypad, boot the DragonBoard
+by cycling power. Release the key shortly thereafter. The
+DragonBoard bootloader will pause in fastboot mode, listening to
+commands from a fastboot client.  (Unfortunately, there is no output
+on the LCD or on the serial console to indicate that the device is in
+fastboot mode).
 
-. Connect the DragonBoard(TM) USB device port to the workstation and verify 
+. Connect the DragonBoard USB device port to the workstation and verify 
 connectivity
 +
 After making the USB connection and giving workstation a few seconds to 
 enumerate the new device, run the fastboot client to verify connectivity to the 
-bootloader.
+bootloader. If the client is able to talk to the bootloader, it will print the serial 
+number of the DragonBoard.
 +
 ....
 # fastboot devices
+b1732aaf        fastboot
 ....
-+
-If the client is able to talk to the bootloader, it will print the serial 
-number of the DragonBoard(TM).
 
 . Write kernel and initramfs to 'boot' partition
 +
@@ -126,18 +126,37 @@ containing the root filesystem to the partition named 'userdata'.
 # fastboot flash userdata ptux.img
 ....
 
-Now the operating system has been installed on DragonBoard(TM) and it is ready 
+Now the operating system has been installed on DragonBoard and it is ready 
 to be booted for the first time.
 
-== Boot DragonBoard(TM) for the first time
+== Connect a serial terminal
 
-Before booting DragonBoard(TM) for the first time, connect a serial terminal to 
-the only DE9 port. This port is the system's console, the destination for 
-kernel log messages and a login prompt leading to a command shell. The serial 
-communication parameters are 115200-8-N-1 (115200 bits per second, 8 data bits, 
-no parity bit, and 1 stop bit).
+The DragonBoard's DE9 connector is connected to the primary serial line,
+which is used as the system console, to which kernel messages are directed
+and on which a command shell may be started. The serial line parameters are
+115200-8-N-1 (115200 bits per second, 8 data bits, no parity bit, and 1
+stop bit) at RS-232 signaling levels. The connector uses a DCE pin-out.
 
-Reset the DragonBoard(TM) by cycling power. Within seconds, the newly installed 
+Use whatever serial terminal software and hardware you prefer; the instructions
+below are for a Pragmatux workstation using a USB-to-serial adapter.
+
+. Connect a straight-through RS-232 serial cable between the DragonBoard's
+DE9 connector and the USB-to-serial adapter.
+
+. Start http://www.gnu.org/software/screen/manual/screen.html[GNU screen]
+as a terminal emulator.
++
+....
+# screen /dev/ttyUSB0 115200
+....
++
+Don't expect any output until the board is powered up.
++
+For help, type 'ctrl-a' followed by '?'; and to quit, type  'ctrl-a' 'k'.
+
+== Boot DragonBoard for the first time
+
+Reset the DragonBoard by cycling power. Within seconds, the newly installed 
 kernel should boot and write considerable output to the serial console. The 
 very first time the operating system starts, it will go through a minute-long 
 installation procedure and automatically restart the board.
@@ -149,8 +168,6 @@ While ignoring warnings is normally a bad practice, novice users can safely
 ignore warnings in this output when installing a default configuration unless 
 the system fails to behave as expected after the after the first boot.
 
-== Operate the DragonBoard(TM)
-
 On the second and all subsequent boots, a login prompt leading to a command 
-shell is offered on the serial port. The only account following a basic 
-installation is 'root' with the password 'password'.
+shell is offered on the serial port. The only account which exists
+following a basic installation is 'root' with the password 'password'.
