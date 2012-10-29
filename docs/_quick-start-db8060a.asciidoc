@@ -31,27 +31,27 @@ stated.
 
 . Add package sources for Pragmatux Workstation
 +
-There are several ways of adding package sources to the newly installed Debian
-OS, including GUI tools; but, the simplest way is to create the
-following text file:
+Configure the workstation to use the Pragmatux package sources by downloading
+and installing the package
+http://pragmatux.org/misc/apt-source-ptux-workstation.deb[apt-source-ptux-workstation.deb].
 +
-----
-# filename: /etc/apt/sources.list.d/pragmatux.list
-deb http://packages.pragmatux.org/workstation alpha main
-deb http://emdebian.org/debian squeeze main
-----
+To install:
 +
-Then have the package management system read the contents of the package
-sources:
+....
+# dpkg -i apt-source-ptux-workstation.deb
+....
+
+. Have the package management system read the contents of the package
+sources
 +
 ....
 # apt-get update
 ....
 +
-For now, ignore the warning about the inability to verify the authenticity of 
-the Emdebian package repository.
+For now, ignore the warning about the inability to verify the authenticity of
+the Emdebian package repository. This will be rectified in a future step.
 
-. Install the workstation package tree for DragonBoard 8060A development
+. Install the development tools for DragonBoard 8060A
 +
 ....
 # apt-get install ptux-workstation-db8060a

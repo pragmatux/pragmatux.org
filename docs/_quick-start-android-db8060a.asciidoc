@@ -1,0 +1,86 @@
+Quick-Start Guide for Android on DragonBoard(TM) 8060A
+======================================================
+:Author: Ryan Kuester
+:Email: rkuester@insymbols.com
+:Revision: Pre-Release Draft
+
+This is a brief guide to running Android on the DragonBoard 8060A.
+
+== Follow the prerequisite guide
+
+This is a supplement to the link:quick-start-db8060a.html[Quick-Start
+Guide for the DragonBoard 8060A] and should be followed 'after you complete
+the first guide.'
+
+== Add a new source containing Android packages
+
+The workstation needs to be associated with a package source which contains
+Android packages. These packages contain special drivers which may only
+be distributed to licensees of DragonBoard; therefore, the package
+source are not accessible to the Internet at large. A cryptographic key is
+required to authenticate the client workstation or device to the private
+package sources.
+
+Presently, the only means of obtaining a key is by private request to
+rkuester@insymbols.com. In the near future, keys will be made available
+to licensees via the Intrinsyc support site.
+
+. Obtain a package containing the licensee key.
+
+. Install the key package on the workstation.
++
+....
+# dpkg -i key-intrinsyc-db8060a-client-anonymous.deb
+....
+
+. Add the private package source
++
+Configure the workstation to use the private Intrinsyc package source by downloading and installing the package http://hosting.pragmatux.com/intrinsyc/misc/apt-source-intrinsyc-db8060a-workstation.deb[apt-source-intrinsyc-db8060a-workstation.deb].
++
+To install:
++
+....
+# dpkg -i apt-source-intrinsyc-db8060a-workstation.deb
+....
+
+== Install additional developer tools
+
+. Refresh the workstation's indexes of its package sources.
++
+....
+# apt-get update
+....
+
+. Install the package which defines additional development tools for developing
+with Android.
++
+....
+# apt-get install ptux-workstation-db8060a-licensee
+....
+
+== Create device filesystem images
+
+. Compose a filesystem using the default set of packages, including Android.
++
+....
+$ mkdir wrk
+$ cd wrk
+$ fakeroot mkos-db8060a-licensee-android
+....
+
+As in the previous quick-start, this will create two files: 'boot.img'
+containing the kernel and initramfs, and 'ptux.img' containing the root
+filesystem. These are to be programmed in the
+link:quick-start-db8060a.html#_write_device_filesystem_images_to_emmc_storage[same
+manner] described in the previous Quick-Start.
+
+== Using Android
+
+With these filesystem images, the DragonBoard will boot
+link:quick-start-db8060a.html#_boot_dragonboard_for_the_first_time[as before].
+This time, Android will start on the touchscreen display. A command shell
+remains available on the serial port.
+
+To prevent Android from putting the device and the serial command shell to
+sleep, enable the 'Keep device awake' option under the 'Settings->Developer
+Options' menu.
