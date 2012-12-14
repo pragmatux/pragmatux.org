@@ -25,4 +25,4 @@ HTML output of the xhtml11 backend using the configuration file _asciidoc.conf.
 (This typically results in a set of divs, unadorned with asciidoc's typical
 HTML header and footer material.)
 
-The program asciidoc(1) must be installed and in the PATH.
+The programs pandoc(1) and asciidoc(1) must be installed and in the PATH.
