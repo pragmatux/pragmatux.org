@@ -13,5 +13,10 @@ rsync -a --exclude=/_* --exclude=/.* --exclude=*_ --exclude=_* * _site
 # of the generated file is the template name without the trailing underscore.
 for file in $(find . -name '*_' -type f); do
 	mkdir -p _site/${file%/*}
-	./_splice.py $file >_site/${file%_}
+	output=_site/${file%_}
+	if test -x $file; then
+		$file $output
+	else
+		./_splice.py $file >$output
+	fi
 done
