@@ -178,6 +178,15 @@ a.block, a.block:hover {
 	line-height: normal;
 }
 
+.doc .toc a:link {color:#333;}
+.doc .toc a:visited {color:#333;}
+.doc h2 a:link {color:#333;}
+.doc h2 a:visited {color:#333;}
+.doc h3 a:link {color:#333;}
+.doc h3 a:visited {color:#333;}
+.doc h4 a:link {color:#333;}
+.doc h4 a:visited {color:#333;}
+
 .doc h1 {
 	text-align: center;
 	margin: 1.5em 0;
