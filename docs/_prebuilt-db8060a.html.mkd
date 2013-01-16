@@ -39,6 +39,15 @@ Document Release Date: January 16, 2013
     d4cf3e6a85e3d2ce7d1623ba0e8581a7  ptux-db8060a-20130116.img
     f63e9fc0b61ab190adb960f4920d2f67  ptux-db8060a-20130116.tgz
 
+## Downloadble Links ##
+
+[boot-db8060a-20130116.img](/prebuilt/boot-db8060a-20130116.img)
+
+[ptux-db8060a-20130116.img](/prebuilt/ptux-db8060a-20130116.img)
+
+[ptux-db8060a-20130116.tgz](/prebuilt/ptux-db8060a-20130116.tgz)
+
+
 # Overview #
 
 The above files contain a base Pragmatux operating system for the
