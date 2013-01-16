@@ -11,6 +11,10 @@ Users Manual] to learn the magic behind these steps, and consult the
 link:users-manual-db8060.html[Pragmatux Users Manual for DragonBoard 8060]
 for topics specific to the DragonBoard 8060.
 
+There is a community of DragonBoard users at http://mydragonboard.org,
+with forums suitable for hardware questions. Pragmatux software questions are
+best directed to the mailto:pragmatux-users@lists.pragmatux.org[Pragmatux mailing list].
+
 == Setup a Pragmatux Workstation
 
 The development environment for creating programs, packages, and filesystem

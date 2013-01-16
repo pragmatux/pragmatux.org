@@ -84,3 +84,8 @@ remains available on the serial port.
 To prevent Android from putting the device and the serial command shell to
 sleep, enable the 'Keep device awake' option under the 'Settings->Developer
 Options' menu.
+
+There is a community of DragonBoard users at http://mydragonboard.org, with
+forums suitable for questions about Dragonboard hardware and questions about
+Android on Dragonboard. Pragmatux questions are best directed to the
+mailto:pragmatux-users@lists.pragmatux.org[Pragmatux mailing list].
