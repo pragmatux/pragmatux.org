@@ -200,6 +200,12 @@ a.block, a.block:hover {
 	margin-top: 1em;
 }
 
+.doc h3 {
+	font-size: 20px;
+	line-height: 40px;
+	font-weight: 400;
+}
+
 .doc p {
 	font-family: 'Droid Serif', serif;
 	font-size: 15px;
