@@ -1,5 +1,183 @@
-% Prebuilt Images for the DragonBoard&trade; 8060A
+% Pragmatux Release Notes for Intrinsyc&trade; DragonBoard APQ8060A
 
-# Heading 1
+Copyright (c) 2013 Pragmatux Foundation, Inc.  All Rights Reserved
 
-Look at this body!
+_Pragmatux_ is a trademark of Pragmatux Foundation, Inc., registered
+in the United States of America and other countries.  _Intrinsyc_ is a
+trademark of Intrinsyc Software International, Inc., registered in
+Canada and other countries.  _Qualcomm_, _Snapdragon_, and
+_DragonBoard_ are registered tradmarks of Qualcomm Incorporated,
+registered in the United States of America and other countries.  Other
+product and brand names used herein may be trademarks or registered
+trademarks of their respective owners.
+
+Mention of any particular product or brand name herein is for
+instructional purposes only, and does not constitute endorsement by
+Pragmatux Foundation, Inc.
+
+This document contains technical data that may be subject to United
+States and international export, re-export, or transfer ("export")
+laws.  Diversion contrary to United States and international law is
+strictly prohibited.
+
+# Identification #
+
+Version: 20130116
+Document Release Date: January 16, 2013
+
+# History #
+
+20130116: Initial release.
+
+# Associated Files #
+
+    $ md5sum boot-db8060a-20130116.img \
+             ptux-db8060a-20130116.img \
+             ptux-db8060a-20130116.tgz
+
+    53b88ae87abb0c6f5a489c80ba148130  boot-db8060a-20130116.img
+    d4cf3e6a85e3d2ce7d1623ba0e8581a7  ptux-db8060a-20130116.img
+    f63e9fc0b61ab190adb960f4920d2f67  ptux-db8060a-20130116.tgz
+
+# Overview #
+
+The above files contain a base Pragmatux operating system for the
+Intrinsyc DragonBoard APQ8060A SOM, and may be installed according to
+the abbreviated procedure described below.  For more detailed
+instructions and the procedure used to construct these files, consult
+the Pragmatux Quick Start Guide for the target device located here:
+<http://pragmatux.org/docs/quick-start-db8060a.html>
+
+This document also provides a list of the high-level capabilities and
+features supported by this release, as well as any known issues.  Note
+that all testing is performed with the SOM attached to the compatible
+expansion board provided by Intrinsyc.
+
+Pragmatux is an embedded Linux operating system that also supports
+Android and other application frameworks.  Please contact the supplier
+of your device to obtain Pragmatux image files containing Android for
+the Intrinsyc DragonBoard APQ8060A.
+
+# Additional Documents #
+
+## Applicable Documents ##
+
+None.
+
+## Reference Documents ##
+
+None.
+
+Technical Note: Obtaining a list of package versions from a Pragmatux ptux.img file.
+Technical Note: Obtaining the source code for Pragmatux packages.
+
+
+# Functional Description #
+
+This software release utilizes Qualcomm's Linux kernel for the
+APQ8060A, as provided by Code Aurora Forum.  As with all Pragmatux
+releases, the remaining components are Pragmatux project resources, or
+derivatives from the Embedded Debian, Debian, and other projects.
+
+A base Pragmatux release provides a basic, out-of-box embedded Linux
+functionality that the end user then enhances and customizes by
+downloading software packages from the Pragmatux project and other
+repositories directly to their target device.
+
+As described in the Pragmatux User's Manual, a developer may easily
+produce their own images that are pre-customized to their needs, as
+well as configure a developer workstation with compatible development
+tools, libraries, and header files.
+
+# Functional Features by Subsystem #
+
+## Serial console ##
+
+Supported.  Provides kernel message log and login console.
+
+## Ethernet ##
+
+Supported.  Address configuration via DHCP.  Detects cable
+(re)insertion after power-up, and initates a DHCP request thereafter.
+
+## 802.11 WiFi ##
+
+Supports unencrypted and WPA2 links.
+
+Release image contains command-line tools required for configuration.
+Procedure is documented in the Quick Start Guide.
+
+## Graphic Display and Touch Interface ##
+
+Unaccelerated framebuffer supported, configured per the expansion
+board display.  The /dev/fb device node is provided.
+
+Display accelerator libraries are available from Intrinsyc under
+license.  Contact them for information.
+
+Touch interface is supported via /dev/input node.
+
+## USB ##
+
+Device connector on the SOM is supported, but not assigned a functionality.
+
+Device connector on the expansion board is configured for usb-storage,
+backed by one of the SOM's eMMC partitions.
+
+## Sensors ##
+
+Accelerometer, compass, and proximity sensors supported via /dev/input interfaces.
+
+## Boot ##
+
+SOM is shipped by Intrinsyc with _fastboot_ support for low-level
+programming; Pragmatux leaves this unchanged.
+
+SOM boots to the onboard eMMC device; Pragmatux leaves this unchanged.
+
+This board is compatible with the Pragmatux "unbrickable" customizable
+Linux bootloader.  See the Pragmatux website for installation
+instructions.
+
+# Known Issues by Subsystem #
+
+In the following, "not tested" means that the status is unchanged from
+previous releases; the functionality of the subsystem has been neither
+confirmed nor denied.  In some cases, Technical Notes containing
+additional information are produced after this Release Note; see the
+Pragmatux website for more information.
+
+
+## GPS ##
+
+Hardware known functional (tested under Pragmatux Android).
+Supporting software not yet packaged for base Pragmatux release.
+
+## Bluetooth ##
+
+Hardware known functional (tested under Pragmatux Android).
+Supporting software not yet packaged for base Pragmatux release.
+
+## FM RX and TX ##
+
+Not tested.
+
+## NFC ##
+
+Not tested.
+
+## HDMI ##
+
+Hardware known functional (tested under Pragmatux Android).
+Supporting software not yet packaged for base Pragmatux release.
+
+## Audio Input and Output ##
+
+Hardware known functional (tested under Pragmatux Android).
+Supporting software not yet packaged for base Pragmatux release.
+
+## Gyroscope ##
+
+Hardware known functional via testing with kernel device driver.
+Driver not yet ready for release, see Pragmatux mailing lists for more
+information and estimated release date.
