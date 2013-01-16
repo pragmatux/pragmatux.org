@@ -18,7 +18,12 @@
 								href="http://www.intrinsyc.com/products/qualcomm/dragonboard.aspx">sold by Intrinsyc</a> and discussed at
 								the <a href="http://mydragonboard.org">myDragonBoard</a> community site.
 
+								<div class="span4">
 								<h4><a href="docs/quick-start-db8060a.html">Quick-Start Guide</a></h4>
+								</div>
+								<div class="span4">
+								<h4><a href="docs/prebuilt-db8060a.html">Prebuilt Images</a></h4>
+								</div>
 							</p>
 						</div>
 					</div>
@@ -38,7 +43,9 @@
 								by Bsquare</a> and discussed at the <a href="http://mydragonboard.org">myDragonBoard</a> community site,
 								the 8060 is development board designed around the Qualcomm Snapdragon&trade; S3 APQ8060 system-on-chip.
 
+								<div class="span4">
 								<h4><a href="docs/quick-start-db8060.html">Quick-Start Guide</a></h4>
+								</div>
 							</p>
 						</div>
 					</div>

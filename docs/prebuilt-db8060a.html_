@@ -1,0 +1,7 @@
+pandoc --template docs/_doc.html \
+       --include-before-body=_fragments/header \
+       --include-after-body=_fragments/footer \
+       --base-header-level=2 \
+       --toc \
+       --output $1 \
+       docs/_${1##*/}.mkd
