@@ -1,0 +1,214 @@
+Quick-Start Guide for the DragonBoard(TM) 8060A
+===============================================
+:Author: Ryan Kuester
+:Email: rkuester@insymbols.com
+:Revision: Pre-Release Draft
+
+This is a brief guide to creating a Pragmatux Workstation development
+environment and Pragmatux Device filesystem images for the DragonBoard(TM) 8060A
+target. See the more general and thorough link:users-manual.html[Pragmatux
+Users Manual] to learn the magic behind these steps, and consult the
+link:users-manual-db8060a.html[Pragmatux Users Manual for DragonBoard 8060A]
+for topics specific to the DragonBoard 8060A.
+
+There is a community of DragonBoard users at http://mydragonboard.org,
+with forums suitable for hardware questions. Pragmatux software questions are
+best directed to the mailto:pragmatux-users@lists.pragmatux.org[Pragmatux mailing list].
+
+== Setup a Pragmatux Workstation
+
+The development environment for creating programs, packages, and filesystem
+images is a desktop, laptop, or server running the Wheezy version of the
+Debian Linux distribution. That environment is called the 'workstation'. The
+DragonBoard is called the 'device'.
+
+The workstation need not be a physical machine; it is common to use a
+virtual machine or a chroot within another operating system; however,
+the workstation must be of the 'amd64' architecture.
+
+. Install Debian Wheezy
++
+Begin by http://www.debian.org/releases/wheezy/amd64[installing the
+Debian Wheezy operating system] on any amd64 architecture machine.
+The following commands are to be run on that machine, unless otherwise 
+stated.
+
+. Add package sources for Pragmatux Workstation
++
+Configure the workstation to use the Pragmatux package sources by downloading
+and installing the package
+http://pragmatux.org/misc/bravo/apt-source-ptux-workstation.deb[apt-source-ptux-workstation.deb].
++
+To install:
++
+....
+# dpkg -i apt-source-ptux-workstation.deb
+....
+
+. Have the package management system read the contents of the package
+sources
++
+....
+# apt-get update
+....
++
+For now, ignore the warning about the inability to verify the authenticity of
+the Emdebian package repository. This will be rectified in a future step.
+
+. Install the development tools for DragonBoard 8060A
++
+....
+# apt-get install ptux-workstation-db8060a
+....
++
+This will install tens of packages containing the tools and code
+libraries essential for cross-development targeting the DragonBoard. Answer 
+``yes'' when prompted whether to continue, despite the warning about the 
+inability to authenticate several of the packages.
+
+== Create device filesystem images
+
+. Compose a filesystem using the default set of packages
++
+....
+$ mkdir wrk
+$ cd wrk
+$ fakeroot mkos-db8060a
+....
++
+This will create two files, 'boot.img' containing the kernel and initramfs, and 
+'ptux.img' containing the root filesystem. They will be written to the 
+DragonBoard's eMMC storage in subsequent steps.
+
+When invoked without arguments, `mkos-db8060a` composes a filesystem for the
+DragonBoard using a predefined list of packages. Via arguments, this list
+can be modified and extended to define a customized filesystem for each
+project using DragonBoard.
+
+Packages can be added to and removed from a running device using the
+package management tools which are included in the base image.
+
+== Connect a serial terminal
+
+The DragonBoard's DE9 connector is connected to the primary serial line,
+which is used as the system console, to which kernel messages are directed
+and on which a command shell may be started. The serial line parameters are
+115200-8-N-1 (115200 bits per second, 8 data bits, no parity bit, and 1
+stop bit) at RS-232 signaling levels. The connector uses a DTE pin-out.
+
+Use whatever serial terminal software and hardware you prefer; the instructions
+below are for a Pragmatux workstation using a USB-to-serial adapter.
+
+. Connect a null modem RS-232 serial cable between the DragonBoard's
+DE9 connector and the USB-to-serial adapter.
+
+. Start http://www.gnu.org/software/screen/manual/screen.html[GNU screen]
+as a terminal emulator.
++
+....
+# screen /dev/ttyUSB0 115200
+....
++
+For help, type 'ctrl-a' followed by '?'; and to quit, type  'ctrl-a' 'k'.
+
+== Write device filesystem images to eMMC storage
+
+. Put DragonBoard 8060A into 'fastboot' mode
++
+While holding down the 'volume ``+''' key on the keypad, boot the DragonBoard
+by cycling power. Release the key shortly thereafter. The DragonBoard
+bootloader will pause in fastboot mode, listening to commands from a fastboot
+client. Serial output from the bootloader will indicate it's listening for
+fastboot comamnds; however, the LCD will remain blank.
++
+....
+Android Bootloader - UART_DM Initialized!!!
+[0] welcome to lk
+
+[10] platform_init()
+[10] target_init()
+[130] USB init ept @ 0x88f4e000
+[170] fastboot_init()
+[170] udc_start()
+[300] -- reset --
+[300] -- portchange --
+[470] fastboot: processing commands
+....
+
+. Connect the DragonBoard USB device port to the workstation and verify 
+connectivity
++
+After making the USB connection and giving workstation a few seconds to 
+enumerate the new device, run the fastboot client to verify connectivity to the 
+bootloader. If the client is able to talk to the bootloader, it will print the serial 
+number of the DragonBoard.
++
+....
+# fastboot devices
+b1732aaf        fastboot
+....
+
+. Write kernel and initramfs to the 'boot' partition
++
+Using the fastboot client on the workstation, write the 'boot.img' image 
+containing the kernel and initramfs to the partition named 'boot'.
++
+....
+# fastboot flash boot boot.img
+sending 'boot' (5474 KB)...
+OKAY [  1.032s]
+writing 'boot'...
+OKAY [  1.093s]
+finished. total time: 2.125s
+....
+
+. Write root filesystem image to the 'system' partition
++
+Using the fastboot client on the workstation, write the 'ptux.img' image 
+containing the root filesystem to the partition named 'system'.
++
+....
+# fastboot flash system ptux.img
+sending 'system' (85797 KB)...
+OKAY [  8.391s]
+writing 'system'...
+OKAY [ 27.812s]
+finished. total time: 36.203s
+....
+
+Now the operating system has been installed on DragonBoard and it is ready 
+to be booted for the first time.
+
+== Boot DragonBoard for the first time
+
+Reset the DragonBoard by cycling power. Within seconds, the newly installed 
+kernel should boot and write considerable output to the serial console. The 
+very first time the operating system starts, it will go through a minute-long 
+installation procedure and automatically restart the board.
+
+....
+Setting up ncurses-base (5.7+20100313-5em1) ...
+Setting up sensible-utils (0.0.4em1) ...
+Setting up dpkg-autoconfigure (1.5~dev2) ...
+Setting up devnodes-ptux (1.3) ...
+Setting up sshd-run (1.0) ...
+Setting up linux-db8060a (3.0.21-12374-gcae2925-1) ...
+[....]
+....
+
+The installation generates much debugging, informational, and warning output 
+due to the unusual state of the system at installation time and the 
+inconsistent use of logging levels by several of packages being installed.  
+While ignoring warnings is normally a bad practice, novice users can safely 
+ignore warnings in this output when installing a default configuration unless 
+the system fails to behave as expected after the after the first boot.
+
+On the second and all subsequent boots, a login prompt leading to a command 
+shell is offered on the serial port. The only account which exists
+following a basic installation is 'root' with the password 'password'.
+
+....
+Pragmatux alpha ptux ttyHSL0
+
+ptux login:
+....
