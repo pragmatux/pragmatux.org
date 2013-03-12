@@ -18,7 +18,7 @@ best directed to the mailto:pragmatux-users@lists.pragmatux.org[Pragmatux mailin
 == Setup a Pragmatux Workstation
 
 The development environment for creating programs, packages, and filesystem
-images is a desktop, laptop, or server running the Squeeze version of the
+images is a desktop, laptop, or server running the Wheezy version of the
 Debian Linux distribution. That environment is called the 'workstation'. The
 DragonBoard is called the 'device'.
 
@@ -26,10 +26,10 @@ The workstation need not be a physical machine; it is common to use a
 virtual machine or a chroot within another operating system; however,
 the workstation must be of the 'amd64' architecture.
 
-. Install Debian Squeeze
+. Install Debian Wheezy
 +
-Begin by http://www.debian.org/releases/squeeze/amd64[installing the
-Debian Squeeze operating system] on any amd64 architecture machine.
+Begin by http://www.debian.org/releases/wheezy/amd64[installing the
+Debian Wheezy operating system] on any amd64 architecture machine.
 The following commands are to be run on that machine, unless otherwise 
 stated.
 
@@ -37,7 +37,7 @@ stated.
 +
 Configure the workstation to use the Pragmatux package sources by downloading
 and installing the package
-http://pragmatux.org/misc/apt-source-ptux-workstation.deb[apt-source-ptux-workstation.deb].
+http://pragmatux.org/misc/bravo/apt-source-ptux-workstation.deb[apt-source-ptux-workstation.deb].
 +
 To install:
 +
