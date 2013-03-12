@@ -22,31 +22,21 @@ strictly prohibited.
 
 # Identification #
 
-Version: 20130116
-Document Release Date: January 16, 2013
+- Version: 20130312
+- Document Release Date: March 12, 2013
 
 # History #
 
-20130116: Initial release.
+- 20130116: Initial release.
+- 20130312: New images with preliminary GUI.
 
-# Associated Files #
+# Files #
 
-    $ md5sum boot-db8060a-20130116.img \
-             ptux-db8060a-20130116.img \
-             ptux-db8060a-20130116.tgz
-
-    53b88ae87abb0c6f5a489c80ba148130  boot-db8060a-20130116.img
-    d4cf3e6a85e3d2ce7d1623ba0e8581a7  ptux-db8060a-20130116.img
-    f63e9fc0b61ab190adb960f4920d2f67  ptux-db8060a-20130116.tgz
-
-## Downloadble Links ##
-
-[boot-db8060a-20130116.img](/prebuilt/boot-db8060a-20130116.img)
-
-[ptux-db8060a-20130116.img](/prebuilt/ptux-db8060a-20130116.img)
-
-[ptux-db8060a-20130116.tgz](/prebuilt/ptux-db8060a-20130116.tgz)
-
+File                                                              MD5 fingerprint
+----------------------------------------------------------------  --------------------------------
+[boot-db8060a-20130312.img](/prebuilt/boot-db8060a-20130312.img)  1b3fc7930f8edff4c94163468d2fa5cb
+[ptux-db8060a-20130312.img](/prebuild/ptux-db8060a-20130312.img)  020dafccf0123f4536802ff4bce42b33
+[ptux-db8060a-20130312.tgz](/prebuilt/ptux-db8060a-20130312.tgz)  4eb06b5fc8a3489e425ec70b946e3996
 
 # Overview #
 
@@ -75,10 +65,8 @@ None.
 
 ## Reference Documents ##
 
-None.
-
-Technical Note: Obtaining a list of package versions from a Pragmatux ptux.img file.
-Technical Note: Obtaining the source code for Pragmatux packages.
+- Technical Note: Obtaining a list of package versions from a Pragmatux ptux.img file.
+- Technical Note: Obtaining the source code for Pragmatux packages.
 
 
 # Functional Description #
@@ -109,13 +97,6 @@ Supported.  Provides kernel message log and login console.
 Supported.  Address configuration via DHCP.  Detects cable
 (re)insertion after power-up, and initates a DHCP request thereafter.
 
-## 802.11 WiFi ##
-
-Supports unencrypted and WPA2 links.
-
-Release image contains command-line tools required for configuration.
-Procedure is documented in the Quick Start Guide.
-
 ## Graphic Display and Touch Interface ##
 
 Unaccelerated framebuffer supported, configured per the expansion
@@ -125,6 +106,10 @@ Display accelerator libraries are available from Intrinsyc under
 license.  Contact them for information.
 
 Touch interface is supported via /dev/input node.
+
+The system boots to the Enlightenment desktop manager as an demonstration of
+the display and touchscreen hardware. Note that the touchscreen does not reliably
+work in the current release, but a USB mouse does work.
 
 ## USB ##
 
@@ -156,6 +141,15 @@ confirmed nor denied.  In some cases, Technical Notes containing
 additional information are produced after this Release Note; see the
 Pragmatux website for more information.
 
+## Graphic Display and Touch Interface ##
+
+The touchscreen does not reliably work in the current release, but a USB mouse
+does.
+
+## 802.11 WiFi ##
+
+Hardware known functional (tested under Pragmatux Android).
+Supporting software not yet packaged for base Pragmatux release.
 
 ## GPS ##
 
