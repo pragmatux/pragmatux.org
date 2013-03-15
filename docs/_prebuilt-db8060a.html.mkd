@@ -22,21 +22,21 @@ strictly prohibited.
 
 # Identification #
 
-- Version: 20130312
-- Document Release Date: March 12, 2013
+- Version: 20130315
+- Document Release Date: March 15, 2013
 
 # History #
 
 - 20130116: Initial release.
-- 20130312: New images with preliminary GUI.
+- 20130312: Add preliminary GUI.
+- 20130315: Fix touchscreen, add web browser.
 
 # Files #
 
-File                                                              MD5 fingerprint
-----------------------------------------------------------------  --------------------------------
-[boot-db8060a-20130312.img](/prebuilt/boot-db8060a-20130312.img)  1b3fc7930f8edff4c94163468d2fa5cb
-[ptux-db8060a-20130312.img](/prebuild/ptux-db8060a-20130312.img)  020dafccf0123f4536802ff4bce42b33
-[ptux-db8060a-20130312.tgz](/prebuilt/ptux-db8060a-20130312.tgz)  4eb06b5fc8a3489e425ec70b946e3996
+File                                                                    MD5 fingerprint
+----------------------------------------------------------------        --------------------------------
+[boot-db8060a-20130315.img](/prebuilt/boot-db8060a-20130315.img)        1b3fc7930f8edff4c94163468d2fa5cb
+[ptux-db8060a-20130315.img.gz](/prebuilt/ptux-db8060a-20130315.img.gz)  be13c30dfe1c09784cfc1719a09f828d
 
 # Overview #
 
@@ -45,7 +45,8 @@ Intrinsyc DragonBoard APQ8060A SOM, and may be installed according to
 the abbreviated procedure described below.  For more detailed
 instructions and the procedure used to construct these files, consult
 the Pragmatux Quick Start Guide for the target device located here:
-<http://pragmatux.org/docs/quick-start-db8060a.html>
+<http://pragmatux.org/docs/quick-start-db8060a.html>.  Please note the
+filesystem image must be uncompressed before writing via fastboot.
 
 This document also provides a list of the high-level capabilities and
 features supported by this release, as well as any known issues.  Note
@@ -108,8 +109,7 @@ license.  Contact them for information.
 Touch interface is supported via /dev/input node.
 
 The system boots to the Enlightenment desktop manager as an demonstration of
-the display and touchscreen hardware. Note that the touchscreen does not reliably
-work in the current release, but a USB mouse does work.
+the display and touchscreen hardware.
 
 ## USB ##
 
@@ -140,11 +140,6 @@ previous releases; the functionality of the subsystem has been neither
 confirmed nor denied.  In some cases, Technical Notes containing
 additional information are produced after this Release Note; see the
 Pragmatux website for more information.
-
-## Graphic Display and Touch Interface ##
-
-The touchscreen does not reliably work in the current release, but a USB mouse
-does.
 
 ## 802.11 WiFi ##
 
