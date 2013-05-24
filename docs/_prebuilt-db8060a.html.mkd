@@ -22,21 +22,22 @@ strictly prohibited.
 
 # Identification #
 
-- Version: 20130315
-- Document Release Date: March 15, 2013
+- Version: 20130524
+- Release Date: May 24, 2013
 
 # History #
 
 - 20130116: Initial release.
 - 20130312: Add preliminary GUI.
 - 20130315: Fix touchscreen, add web browser.
+- 20130524: Fix root partition
 
 # Files #
 
 File                                                                    MD5 fingerprint
 ----------------------------------------------------------------        --------------------------------
-[boot-db8060a-20130315.img](/prebuilt/boot-db8060a-20130315.img)        1b3fc7930f8edff4c94163468d2fa5cb
-[ptux-db8060a-20130315.img.gz](/prebuilt/ptux-db8060a-20130315.img.gz)  be13c30dfe1c09784cfc1719a09f828d
+[boot-db8060a-20130524.img](/prebuilt/boot-db8060a-20130524.img)        52a797e040c66568c9fdb02dd03ec89e
+[ptux-db8060a-20130524.img.gz](/prebuilt/ptux-db8060a-20130524.img.gz)  b588cc93212591fc561e265ae6994c48
 
 # Overview #
 
