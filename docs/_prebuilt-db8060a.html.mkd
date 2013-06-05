@@ -22,8 +22,8 @@ strictly prohibited.
 
 # Identification #
 
-- Version: 20130524
-- Release Date: May 24, 2013
+- Version: 20130605
+- Release Date: June 5, 2013
 
 # History #
 
@@ -31,13 +31,14 @@ strictly prohibited.
 - 20130312: Add preliminary GUI.
 - 20130315: Fix touchscreen, add web browser.
 - 20130524: Fix root partition
+- 20130605: Kernel updates, see [changelog](https://raw.github.com/pragmatux/linux-db8060a/1e58e093669a6fc09812e865323f28f47d00ac07/debian/changelog)
 
 # Files #
 
 File                                                                    MD5 fingerprint
 ----------------------------------------------------------------        --------------------------------
-[boot-db8060a-20130524.img](/prebuilt/boot-db8060a-20130524.img)        52a797e040c66568c9fdb02dd03ec89e
-[ptux-db8060a-20130524.img.gz](/prebuilt/ptux-db8060a-20130524.img.gz)  b588cc93212591fc561e265ae6994c48
+[boot-db8060a-20130605.img](/prebuilt/boot-db8060a-20130605.img)        c53c6c210d779ae6cccb85d76e914656
+[ptux-db8060a-20130605.img.gz](/prebuilt/ptux-db8060a-20130605.img.gz)  de6c2907270f1692bb3f9052d0b60652
 
 # Overview #
 
