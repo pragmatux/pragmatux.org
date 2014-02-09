@@ -1,2 +1,2 @@
 #!/bin/sh
-cd _site && python -m SimpleHTTPServer >/dev/null 2>&1
+cd _site && python -m SimpleHTTPServer 8080 >/dev/null 2>&1
