@@ -1,0 +1,28 @@
+% Prebuilt Images for the Inforce Computing IFC6410
+
+# Introduction #
+
+Prebuilt images are provided below of the filesystem generated when
+using the *device-ifc6410* root package. The system specified by this root
+package and its dependencies is a reference design. Use it to "kick the tires"
+of Pragmatux, test that the hardware is operational, and verify that your
+image-loading tools work.
+
+Prebuilt images are of limited value once you embark on a real project, when
+you'll want to generate your own customized filesystems and compile and package
+your own software. That's why the [quick-start
+guide](/docs/quick-start-ifc6410.html) doesn't give you prebuilt images, but
+rather sets up a development workstation with the Pragmatux SDK and has you
+build these images for yourself. It's only a small step from building the
+reference design to building custom designs specified by your own
+*device-myproject* root package.
+
+# Images #
+
+These images are loaded into Flash using a fastboot client as described in the
+[IFC6410 Quick-Start Guide](/docs/quick-start-ifc6410.html). A client is
+provided in the Pragmatux SDK. To load these images without using the Pragmatux
+SDK, you'll need to obtain a fastboot client on your own.
+
+ * [boot-ifc6410.img](/prebuilt/boot-ifc6410.img)
+ * [ptux-ifc6410.img](/prebuilt/ptux-ifc6410.img)
