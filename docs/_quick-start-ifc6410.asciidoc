@@ -50,6 +50,11 @@ sources
 ....
 # apt-get update
 ....
++
+If you see errors about access to files related to the armhf architecture,
+make sure the packages sources configured for your workstation offer packages
+for the armhf architecture; a minority do not. When in doubt, try
+http://ftp.us.debian.org/debian.
 
 . Install the SDK for the IFC6410
 +
@@ -59,6 +64,14 @@ sources
 +
 This will install tens of packages containing the tools and code
 libraries essential for cross-development targeting the IFC6410.
++
+In the future, your installation of the SDK can be upgraded by repeating steps
+3 and 4
++
+....
+# apt-get update
+# apt-get install --no-install-recommends ptux-sdk-ifc6410
+....
 
 == Create device filesystem images
 
@@ -81,6 +94,33 @@ project using the platform.
 
 Packages can be added to and removed from a running device using the
 package management tools included in the base image.
+
+=== Create images containing limited-distribution content
+
+The firmware required to run several of the IFC6410's peripherals
+including the Wi-Fi radio is available only to licensees of Inforce
+Computing. In the common case, a license is conferred with the purchase
+of a board. Through the purchase, you also gain access to
+limited-distribution documents and software via the
+http://www.inforcecomputing.com/techweb[Inforce TechWeb]. Among the
+downloads available with a TechWeb account is a key which enables
+mkos-ifc6410 to pull from an access-controlled repository containing
+packages with the limited-distribution firmware and other binaries.
+
+. To the workstation, download the package containing the key and install it via dpkg
++
+....
+# dpkg -i key-inforce-ifc6410-licensee-example.deb
+....
+
+. Compose a filesystem in the same manner as above
++
+....
+# fakeroot mkos-ifc6410
+....
++
+`mkos-ifc6410` will automatically detect the installed key and add the
+limited-distribution content to the filesystems it builds.
 
 == Connect a serial terminal
 
@@ -121,7 +161,7 @@ http://mydragonboard.org/2013/forcing-ifc6410-into-fastboot[this blog
 post] on the myDragonBoard.com community site and power the IFC6410 on.
 The bootloader will pause in fastboot mode, listening to commands from a
 fastboot client. Serial output from the bootloader will indicate it's
-listening for fastboot comamnds.
+listening for fastboot commands.
 +
 ....
 Android Bootloader - UART_DM Initialized!!!
@@ -215,4 +255,94 @@ exists following a basic installation is 'root' with the password
 Pragmatux 3.0 ptux ttyHSL0
 
 ptux login:
+....
+
+== Configure Wi-Fi
+
+Pragmatux uses the network manager connman, which is well suited to
+embedded systems. In addition to flexibly handling multiple media types
+(Wi-Fi, wired Ethernet, Bluetooth, tethering, etc.), connman is designed
+to be programatically controlled via its DBus interface, which enables
+tight integration with the embedded device's custom software. This
+differs from other network managers, most of which are designed assuming
+the system is administered by an operator who can edit configuration
+files.
+
+A command-line client, `connmanctl`, provides an interface for
+configuring the network during testing and development. The
+always-excellent Arch Linux wiki has
+https://wiki.archlinux.org/index.php/Connman[a page detailing the
+operation of `connman` and `connmanctl`.]
+
+The steps to connect to a WPA-secured network follow.
+
+. Launch the command line client `connmanctl` in interactive mode
++
+....
+# connmanctl 
+connmanctl>
+....
+
+. Use `help` to see the set of available commands
++
+....
+connmanctl> help
+state
+technologies
+enable          <technology>|offline
+disable         <technology>|offline
+tether          <technology> on|off
+[....]
+....
+
+. Enable the technology `wifi`
++
+....
+connmanctl> enable wifi
+Enabled wifi
+....
+
+. Force `wifi` to scan for access points
++
+....
+connmanctl> scan wifi
+Scan completed for wifi
+....
+
+. See the available network services
++
+....
+connmanctl> services
+*A  Wired        ethernet_1a51ce4589e2_cable
+    foobar       wifi_00037f20a274_6b7339406574_managed_psk
+    willowroad   wifi_00037f20a274_77696c639407726f6164_managed_psk
+    :)           wifi_00037f20a274_3b08_managed_psk
+....
+
+. Turn on the interactive password-handler
++
+....
+connmanctl> agent on
+Agent registered
+....
+
+. Associate to the desired access point
++
+....
+connmanctl> connect wifi_00037f20a274_6b7339406574_managed_psk
+Agent RequestInput wifi_00037f20a274_6b7339406574_managed_psk
+  Passphrase = [ Type=psk, Requirement=mandatory ]
+Passphrase?
+Connected wifi_00037f20a274_6b7339406574_managed_psk
+....
+
+. See that the interface is active and has an address
++
+....
+root@device:~# ip addr show dev wlan0
+14: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP
+    link/ether 00:03:7f:20:a2:74 brd ff:ff:ff:ff:ff:ff
+    inet 10.100.0.110/24 brd 10.100.0.255 scope global wlan0
+    inet6 fe80::213:7fff:fe23:b274/64 scope link 
+       valid_lft forever preferred_lft forever
 ....
