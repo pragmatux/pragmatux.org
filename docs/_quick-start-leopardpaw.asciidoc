@@ -1,0 +1,295 @@
+Quick-Start Guide for the TLA Leopardpaw
+========================================
+:Author: Bill Gatliff
+:Email: bgat@billgatliff.com
+:Revision: Pre-Release Draft
+
+This document is a brief guide to creating a Pragmatux Workstation
+development environment, and a Pragmatux Device filesystem image, for
+the TLA Leopardpaw platform.
+
+Additional documentation is available at the
+http://pragmatux.org[Pragmatux website], or from the Leopardpaw team
+POC.
+
+
+== Some terminology
+
+The base environment for creating programs, packages, and filesystem
+images for a target device is a desktop, laptop, or server running the
+Debian Linux distribution. Pragmatux refers to that environment as the
+'Pragmatux Workstation', or simply 'the workstation', because it
+contains development tools like cross compilers, editors, and package
+creators that are not normally needed by an embedded system.
+
+Pragmatux refers to the embedded system as the 'Pragmatux Device', or
+simply 'the device'.  Pragmatux devices do not normally host
+compilers, editors, or other tools normally associated with
+application development, but they must maintain careful compatibility
+with those tools.
+
+The term 'Pragmatux SDK', or simply 'the SDK', refers to tools on the
+developer's workstation that produce application images and other
+binary artifacts for devices.
+
+Pragmatux SDKs automatically assure compatibility between the
+workstation and device, for packages and applications built with that
+device's SDK.  Binaries produced with other development tools are
+likely to work correctly, but your mileage may vary.  Rebuilding
+preexisting binaries with the correct SDK for the device is highly
+recommended.
+
+
+== Set up a Pragmatux Workstation
+
+The developer's workstation need not be a physical machine; it is
+common to use a virtual machine or a chroot within another operating
+system.  The workstation must be of the 'amd64' architecture.
+
+The commands in the next few sections turn a generic Debian
+workstation into a Pragmatux Workstation, and are to be run from a
+command prompt on the workstation unless otherwise specified.
+
+In the following, commands beginning with a hash *#* must be run as
+root.  Other commands should be invoked as an ordinary user.
+
+=== Install Debian Wheezy
+
+Install the
+http://www.debian.org/releases/wheezy/amd64[Debian Wheezy operating
+system] on any amd64 architecture desktop, laptop, or server.
+Consult Debian's documentation for further instructions if necessary.
+
+=== Install repository access certificates
+
+Contact the Leopardpaw POC, and request the following package files:
+
+* `key-leopardpaw-sdk-source-client-anonymous.deb`
+* `key-leopardpaw-device-source-client-anonymous.deb`
+
+Note that package names may be augmented with a version number and
+architecture, i.e. `key-leopardpaw-..._2_all.deb`.  If so, use the
+newest, highest-numbered package file available.
+
+These two packages provide the workstation with certificates needed to
+authenticate access to the SDK and device package repositories. Install them:
+
+....
+# dpkg --install key-leopardpaw-sdk-source-client-anonymous.deb
+# dpkg --install key-leopardpaw-device-source-client-anonymous.deb
+....
+
+Since these certificates are used over HTTPS, make sure that apt's
+HTTPS transport libraries are installed:
+
+....
+# apt-get update
+# apt-get install apt-transport-https
+....
+
+=== Add package repository URLs to the workstation
+
+Contact the Leopardpaw POC, and request the following package file:
+
+* `apt-sources-leopardpaw-sdk.deb`
+
+Install this package on the workstation, then inform dpkg that the
+Leopardpaw device uses the 'armhf' ABI.  Finally, update the
+workstation's package databases:
+
+....
+# dpkg --install apt-sources-leopardpaw-sdk.deb
+# dpkg --add-architecture armhf
+# apt-get update
+....
+
+If you see errors about access to files related to the armhf
+architecture, make sure the package mirror you specified during your
+Debian installation offers packages for this architecture; some
+do not.  When in doubt, use http://ftp.us.debian.org/debian[a primary
+Debian mirror server] as your package source.
+
+=== Install the Leopardpaw SDK
+
+This command installs a few dozen packages containing the tools and
+libraries needed to develop applications targeting the Leopardpaw
+device:
+
+....
+# apt-get install --no-install-recommends ptux-sdk-leopardpaw
+....
+
+Note that thee Leopardpaw SDK makes partial use of the *guestfish*
+instruction set emulator.  Depending on your workstation, guestfish
+may complain during installation about not finding support for KVM;
+you may disregard this message.
+
+Pragmatux SDKs are frequently updated.  You can download and install
+these updates with the following commands:
+
+....
+# apt-get update
+# apt-get upgrade
+....
+
+== Create initial device filesystem images
+
+Pragmatux' device support always includes the ability to compose a
+basic filesystem image.  You use this image to bootstrap a new device,
+after which the device itself can use *apt* and/or *dpkg* for
+upgrades.
+
+If you have several new devices, you can re-use the same initial
+filesystem image across all of them.  At first boot, the devices will
+each personalize themselves based on MAC address, or other unique
+identity.
+
+=== Compose a filesystem using the default set of packages
+
+....
+$ mkdir wrk
+$ cd wrk
+$ fakeroot mkos-leopardpaw
+....
+
+The above command creates two files: `ptux.img`, and `ptux.tgz`.  The
+former is a raw SD card image; the latter is a compressed *tar* archive
+of the contents of that image, which is sometimes useful for
+reference.
+
+During its operation, mkos-leopardpaw invokes *sfdisk* to
+create the device filesystem image as an ordinary data file, which is
+not its default use case.  You may disregard output similar to the
+following:
+
+....
+ Creating ptux.img...
+ Warning: ptux.img is not a block device
+ Disk ptux.img: cannot get geometry
+ sfdisk: ERROR: sector 0 does not have an msdos signature
+  ptux.img: unrecognized partition table type
+ No partitions found
+ BLKRRPART: Inappropriate ioctl for device
+....
+
+When invoked without arguments, *mkos-leopardpaw* composes a
+filesystem for the device using a predefined list of packages. Via
+command-line parameters described elsewhere, this list can be modified
+and extended to define a customized filesystem for each project using
+that device.
+
+Packages can be added to and removed from a running device using the
+package management tools included in the base image, including *apt*
+and *dpkg*.
+
+
+== Create a bootable SD card for the device
+
+Write `ptux.img` to an SD card.  If your user account is a member of
+the `disk` group, then you need not run this command as root:
+
+....
+# dd if=ptux.img of=/dev/sdz bs=1M
+....
+
+The device name for your SD card interface will likely vary from from
+the `sdz` shown in the example.  Replace it with the correct value.
+
+The typical Pragmatux device filesystem image for MLO-based targets is
+about 512MB in size.  Any SD card with a larger capacity will work.
+
+Insert the above SD card into the appropriate slot on the Leopardpaw device.
+
+== Connect a serial terminal
+
+Find Leopardpaw's USB serial console, which is a USB mini-B connector.
+Connect this port to the workstation.
+
+There are several terminal emulation programs available under Debian,
+but *screen* is among the easiest to use and is therefore recommended.
+Install it if necessary:
+
+....
+# apt-get install screen
+....
+
+If your user account is not a memeber of the 'dialout' group, then you
+will need to run the following command as root:
+
+....
+$ screen /dev/ttyUSB0 115200
+....
+
+Replace `ttyUSB0` with the correct value for your workstation.
+
+For help, type *CTRL-A* followed by *?*.  To quit, type *CTRL-A* *k*,
+and then *y* to confirm.  See the *screen(1)* manpage for more commands,
+or the http://www.gnu.org/software/screen/manual/screen.html[online
+documentation].
+
+Note that if you are more comfortable with *minicom*, feel free to use
+it instead of screen.
+
+== Boot the device for the first time
+
+Apply power to the device. Within seconds, the newly installed kernel
+should boot and write considerable output to the serial console. The
+first time the operating system starts, it goes through a final
+installation procedure that will take several minutes:
+....
+Setting up ncurses-base (5.7+20100313-5em1) ...
+Setting up sensible-utils (0.0.4em1) ...
+Setting up dpkg-autoconfigure (1.5~dev2) ...
+Setting up devnodes-ptux (1.3) ...
+Setting up sshd-run (1.0) ...
+Setting up linux-leopardpaw ...
+[....]
+....
+
+After the final installation procedure is complete, the device will
+automatically reboot.
+
+On the second and all subsequent boots, a login prompt leading to a
+command shell is offered on the serial port. The only account which
+exists following a basic installation is 'root' with the password
+'password'.
+
+....
+Pragmatux 3.0 ptux ttyHSL0
+
+device login:
+....
+
+== Configure IP/ethernet
+
+Pragmatux uses the network manager *conman* for IP address assignment
+via DHCP.  It also provides the *ip* command for manual network
+interface configuration and review.
+
+If an ethernet cable is connected at startup, then the device will
+obtain its own, unique IP address.  To discover that address, use this
+command on the device:
+
+....
+device # ip addr show eth0
+eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:0c:29:c3:51:05 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.3.99/24 brd 192.168.3.255 scope global eth0
+    inet6 fe80::20c:29ff:fec3:5105/64 scope link 
+       valid_lft forever preferred_lft forever
+....
+
+The line beginning with `inet` is the device's IPv4 information.
+
+To manually set the IP address to 192.168.3.199:
+
+....
+device # ip addr replace 192.168.3.199 dev eth0
+....
+
+See the *ip(8)* manpage for more information.
+
+
+== Enjoy your new workstation and device!
+
+The Pragmatux Foundation thanks you for choosing our Debian-based approach to embedded Linux.
