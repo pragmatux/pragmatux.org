@@ -216,6 +216,15 @@ a.block, a.block:hover {
 	margin-left: 3em;
 }
 
+.doc code {
+	color: inherit;
+}
+
+.doc strong {
+	color: inherit;
+	font-weight: 700;
+}
+
 /*phone*/
 @media (max-width: 767px) {
 	body { 
