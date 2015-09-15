@@ -1,0 +1,211 @@
+Quick Start: Beagleboard Rev C (or later)
+========================================
+:Author: Bill Gatliff
+:Email: bgat@billgatliff.com
+:Revision: Pre-Release Draft
+
+This document is a brief guide to creating a Pragmatux Workstation
+development environment, and a Pragmatux Device filesystem image, for
+the Beagleboard Revision C (or later) hardware.
+
+Additional Pragmatux documentation is available at the
+http://pragmatux.org[Pragmatux website]. Additional Beagleboard
+documentation is available at the http://beagleboard.org[Beagleboard
+website].
+
+
+=== Some terminology
+
+_Pragmatux Workstation_:: The base environment for creating programs,
+packages, and filesystem images for an embedded system; hosts
+development tools like cross-compilers, editors, and package creators
+that are not normally needed by or installed on an embedded
+system. Often referred to as simply "the workstation".
+
+_Pragmatux Device_:: The embedded system itself; often referred to as
+"the device", or "the target device". Pragmatux devices typically do
+not host cross-compilers or other development tools.
+
+////
+_Pragmatux SDK_:: The minimum collection of development tools required
+by a workstation to successfully generate a "hello, world!"-type
+application for a device. Pragmatux allows multiple SDKs to be
+installed at the same time, even for devices with different
+instruction set architectures.
+////
+
+== Prep a Debian Workstation
+
+Pragmatux uses the http://debian.org[Debian Operating System] Version
+8, a.k.a. "jessie", as its foundation. The amd64 workstation
+architecture is routinely tested, in both native and chroot
+environments. Other configurations may also work.
+
+Install Debian as the native OS on an amd64-based PC workstation,
+inside a virtual machine, or as a chroot under another operating
+system. (TODO: minor tweak required by guestfish if in schroot.)
+
+
+== Add the Pragmatux Workstation Repository
+
+
+Pragmatux provides a single package file
+containing the APT sources required by Pragmatux:
+http://pragmatux.org/sdk/pool/main/p/ptux-sdk/apt-sources-ptux-sdk_14~gb259f46_all.deb[apt-sources-ptux-sdk.deb].
+
+Download apt-sources-ptux-sdk.deb, and install it on your Debian workstation.
+
+....
+$ wget http://pragmatux.org/apt-sources-ptux-sdk.deb
+$ sudo dpkg --install apt-sources-ptux-sdk.deb
+....
+
+Add the instruction set architectures for target devices. The package
+manager requires this to be a manual step:
+
+....
+$ sudo dpkg --add-architecture armel
+$ sudo dpkg --add-architecture armhf
+....
+
+Update the workstation's package repository database:
+
+....
+$ sudo apt-get update
+....
+
+Your workstation is now a generic, "Pragmatux Workstation".
+
+== Install the Beagleboard SDK
+
+....
+$ sudo apt-get install --no-install-recommends ptux-sdk-beagleboard
+....
+
+Answer "yes" to the prompts.  Your workstation is now ready to create
+Beagleboard-hosted applications and filesystem images.
+
+== Create a Device Filesystem Image
+
+The following command composes a generic Pragmatux Device
+filesystem. Additional packages can be added later by invoking
+`apt-get` at the device command line.  The Pragmatux documentation
+describes how to add packages to the default configuration, and how to
+create a customized default of your own.
+
+....
+$ fakeroot mkos-beagleboard
+....
+
+The above step should take less than a minute.  The target's
+filesystem image is the file `ptux.img`.
+
+== Create a Bootable SD Card
+
+Attach an SD card to your workstation.  Replace `/dev/sdcard` with the
+name of the device node actually assigned by your workstation,
+i.e. `/dev/sdh`.  Use the `dmesg` command, if necessary, to verify
+that you have the correct device node.
+
+The SD card must be 1GB or larger in capacity.
+
+WARNING: the following command will erase the ENTIRE contents of
+whatever device you specify. Be absolutely certain you have the right
+value before proceeding!
+
+....
+$ sudo dd if=ptux.img of=/dev/sdcard bs=1M
+....
+
+== Resize the SD Card Filesystem (optional)
+
+If your SD card is larger than 1GB, you can resize the filesystem to
+take advantage of the additional space. You can perform this step at
+any time, but large or "slow" SD cards will take a VERY long time to
+resize.
+
+In the following, replace `/dev/sdcard-partition-2` with the actual
+device node assigned by your workstation for the card's second primary
+partition, i.e. `/dev/sdh2`.
+
+
+....
+$ sudo fsck -f /dev/sdcard
+$ sudo fdisk /dev/sdcard
+(TODO: commands to delete the partition)
+(TODO: commands to create larger partition starting at the same cylinder)
+$ sudo resize2fs /dev/sdcard-partition-2
+....
+
+
+== Attach a Serial Console (optional)
+
+If you have a serial cable for your Beagleboard, attach it
+now. Pragmatux redirects the kernel console to the Beagleboard's `P9`
+header, at 115200N81.  See the Beagleboard's reference manual for more
+information.
+
+== Boot to Pragmatux for the First Time
+
+Insert the SD card into the Beagleboard's connector, and hold down the
+USER button when powering up the device.  Over the next two or three
+minutes, the final installation steps for Pragmatux will take place
+automatically on the device itself.
+
+Once the device reboots, it is a complete, fully-operational,
+Pragmatux Device.  Congratulations!
+
+== Log into the Device (optional)
+
+The serial console's default username is `root`, and the password is `password`.
+
+If you have attached the Beagleboard to an ethernet adapter, and your
+network supports DHCP, then you can also use SSH to log into the
+device.
+
+....
+...
+Pragmatux 3.0 device ttyO2
+
+device login: root
+Password: password
+    
+root@device:~#
+...
+....
+
+== Configure IP/ethernet (optional)
+
+Pragmatux devices use the network manager `conman` for IP address
+assignment via DHCP.  They also provide the `ip` command for manual
+network interface configuration and review.
+
+If an ethernet cable is connected at startup, then the device will
+obtain its own, unique IP address via DHCP.  To discover that address
+from the device's command line, use the following command:
+
+....
+...
+root@device:~# ip addr show eth0
+eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 00:0c:29:c3:51:05 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.3.99/24 brd 192.168.3.255 scope global eth0
+    inet6 fe80::20c:29ff:fec3:5105/64 scope link 
+    valid_lft forever preferred_lft forever
+...
+....
+
+The line beginning with `inet` is the device's IPv4 information.
+
+To manually set the IP address to `192.168.3.199`:
+
+....
+root@device:~#  ip addr replace 192.168.3.199 dev eth0
+....
+
+See the *ip(8)* manpage for more information.
+
+
+== Enjoy your new workstation and device!
+
+The Pragmatux Foundation thanks you for choosing our Debian-based approach to embedded Linux.
