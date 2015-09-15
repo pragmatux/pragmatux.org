@@ -83,6 +83,20 @@
 
 			<div class="news span6">
 				<div class="news-item">
+					<h3>Beagleboard C/D Quick Start Posted</h3>
+					<p>
+						Instructions for setting up Pragmatux
+						on the Beagleboard (revision C or later)
+						have been posted: the <a
+						href="docs/quick-start-beagleboard-armhf.html">Quick-Start
+						Guide for Beagleboard&trade;
+						C/D</a> walks you through setup of a
+						Pragmatux Workstation, and getting to a
+						command prompt on the Beagleboard as a
+						Pragmatux Device.
+					</p>
+				</div>
+				<div class="news-item">
 					<h3>Documentation Posted</h3>
 					<p>
 						A first document has been
