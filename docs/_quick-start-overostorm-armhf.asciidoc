@@ -1,0 +1,276 @@
+Quick-Start Guide for the Gumstix Overo Storm^tm^ COM
+=====================================================
+:Author: Bill Gatliff
+:Email: bgat@billgatliff.com
+:Revision: Pre-Release Draft
+
+The following is a brief guide to creating a Pragmatux Device
+filesystem image for members of the
+https://store.gumstix.com/coms/overo-coms.html[Gumstix Overo
+Computer-on-Module] family.  This procedure has been verified on the
+Overo IronSTORM-P, attached to a Tobi expansion board.
+
+Additional support resources for Gumstix products, including technical
+documentation, downloads, and mailing lists, are available at the
+http://gumstix.org[Gumstix Developer Center] website.
+Pragmatux-specific questions should be directed to the
+http://lists.pragmatux.org[Pragmatux mailing lists].  Pragmatux is not
+affiliated with Gumstix.
+
+== Set Up a Pragmatux Workstation
+
+The development environment for creating programs, packages, and
+filesystem images is a desktop, laptop, or server running the Wheezy
+release of the Debian Linux distribution. That environment is called
+the 'workstation'. The Gumstix Overo Storm COM is hereafter referred
+to as the 'device'.
+
+See the http://pragmatux.com[Pragmatux Website] for TODO: instructions
+to create a Pragmatux Workstation. The workstation need not be a
+dedicated, physical machine: it is common to use a virtual machine or
+a chroot within another operating system, e.g. Ubuntu.  The
+workstation setup instructions are verified to work in dedicated and
+virtual machine setups, but work with little to no modification in
+chroots.
+
+
+== Install the development tools for the Gumstix Overo
+
+A basic Pragmatux Workstation installation provides a pre-packaged SDK
+and related tools for supported devices including the Overo Storm. To
+install it:
+
++
+....
+$ sudo apt-get update
+$ sudo apt-get install ptux-sdk-overostorm
+....
++
+
+The above commands install tens of packages containing the tools and
+code libraries essential for cross-development targeting a Pragmatux
+device runtime environment.  If prompted, answer ``yes'' to install
+some packages without authentication.
+
+== Create device filesystem images
+
+. Compose a filesystem using the default set of packages
++
+....
+$ mkdir overostorm
+$ cd overostorm
+$ sudo fakeroot mkos-overostorm
+....
++
+This command creates 'ptux.img', a bootable SD card image for the
+Overo Storm device.
+
+When invoked without arguments, `mkos-overostorm` composes a
+filesystem with default, basic functionality: serial console, SSH
+server, WiFi support, and so on.  You can manually add or remove
+packages from a running device using package management tools already
+included in the default filesystem.  By passing arguments to
+'mkos-overostorm', however, you can change the features present in the
+filesystem it creates.  See the Pragmatux documentation for more
+information.
+
+== Connect a serial terminal (optional)
+
+The Tobi expansion board has a USB mini-B connector that leads to the
+Overo Storm's serial console.  By connecting a serial terminal to this
+console, you can observe the board's progress during boot and/or log
+into the board when prompted.
+
+The serial console's parameters are 115200-8-N-1 (115200 bits per
+second, 8 data bits, no parity bit, and 1 stop bit).
+
+Use whatever serial terminal software and hardware you prefer; the
+instructions below use
+http://www.gnu.org/software/screen/manual/screen.html[GNU screen] on a
+Pragmatux workstation, which is included in the default setup.
+
+. Start a terminal emulator
++
+....
+$ sudo screen /dev/ttyUSB0 115200
+....
++
+For screen's online help, type 'ctrl-a' followed by '?'; to quit, type  'ctrl-a' 'k'.
+
+== Create a bootable SD card
+
+Use an SD card that is at least as large as the 'ptux.img' file itself
+(usually about 1GB).  A larger SD card will give you more storage area
+on the device, but not until you resize the filesystem after first
+boot (TODO: instructions forthcoming).
+
+Use the 'dmesg' command to determine what name the workstation
+assigns to your SD card when inserted, i.e. '/dev/sdf'.
+
+. Write the image to an SD card
++
+....
+$ sudo dd bs=1M if=ptux.img of=/dev/<sdcard>
+....
+
+== Boot the device for the first time
+
+Disconnect power from the Overo Storm, insert the SD card into its
+card slot, then power up the board.  Within a few seconds, the kernel
+should boot and write considerable output to the serial console. The
+very first time the operating system starts, it will go through a
+minute-long installation procedure and then automatically restart the
+board.
+
+The output should look similar to the following.  You should also see
+the blinking "heartbeat" LED on the Tobi board:
+
++
+....
+Setting up ncurses-base (5.7+20100313-5em1) ...
+Setting up sensible-utils (0.0.4em1) ...
+Setting up dpkg-autoconfigure (1.5~dev2) ...
+Setting up devnodes-ptux (1.3) ...
+Setting up sshd-run (1.0) ...
+Setting up linux-overostorm (...) ...
+[....]
+....
++
+
+The installation generates much debugging, informational, and warning
+output due to the state of the system at installation time and the
+logging by packages being installed.  While ignoring warnings is
+normally a bad practice, novice users can safely ignore warnings in
+this output when installing a default configuration unless the system
+fails to behave as expected after the after the first boot.
+
+== Log in as root on the serial console
+
+On the second and all subsequent boots, a login prompt leading to a
+command shell is offered on the serial console. The only account which
+exists following a basic installation is 'root' with the password
+'password'.
+
++
+....
+Pragmatux 3.0 device ttyO2
+
+device login: root
+Password: password
+....
++
+
+== Enabling root login over SSH
+
+By default, Pragmatux devices permit root logins over SSH only via an
+authorized key. Password-authenticated logins are disabled, and are
+not generally recommended.
+
+=== Authorized-key logins
+
+To allow root login via authorized key, add the contents of your
+personal 'id_rsa.pub' file to '/root/.ssh/authorized_keys' on the
+device by:
+
+* copy/pasting it through the serial console;
+* using 'scp' to copy it over the ethernet link, or;
+* mounting the device's SD card on your workstation.
+
+Create the 'authorized_keys' file if it doesn't already exist.
+
+
+=== Password-authenticated logins
+
+To enable password-authenticated root login, edit '/etc/ssh/sshd_config' as follows.
+
+Change this:
++
+....
+PermitRootLogin without-password
+....
++
+
+... to this:
+
++
+....
+# PermitRootLogin without-password
+PermitRootLogin yes
+....
++
+
+Finally, restart the SSH server:
+
++
+....
+root@device:~# service sshd restart
+....
++
+
+== Log in via SSH
+
+Once you know the IP address assigned to the device by your network, you
+can use the 'ssh' program on your workstation to log into the device.
+
+If necessary, you can find out what IP address is assigned to the
+device from the serial console:
+
++
+....
+Pragmatux 3.0 device ttyO2
+
+device login: root
+Password:
+root@device:~# ip addr show eth0
+2: eth0: <...,UP,...>...
+    ...
+    inet 192.168.88.3/24 ...
+    ...
+....
++
+
+
+== Configuring WiFi
+
+By default, WiFi devices are initialized in a disabled state. Use 'rfkill' to enable a.k.a. "unblock" them:
+
+....
++
+root@device:~# rfkill unblock all
++
+....
+
+Next, use 'Connection Manager' to scan for access points:
+
++
+....
+root@device:~# connmanctl
+connmanctl> scan wifi
+Scan completed for wifi
+connmanctl> services
+TLA Test Bench wifi_00198845cf8d_434322e3447487a_managed_none
+HOME-D098      wifi_00198845cf8d_48452d44303938_managed_psk
+xfinitywifi    wifi_00198845cf8d_786e69747977696669_managed_none
+               wifi_00198845cf8d_hidden_managed_psk
+TLA Guests     wifi_00198845cf8d_4346573747320323447_managed_psk
+connmanctl>
+....
++
+
+Finally, connect to the selected access point. You may use
+tab-completion to assist in typing the long station identifier:
+
++
+....
+connmanctl> connect wifi_00198845cf8d_434322e3447487a_managed_none
+[10992.965606] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+Connected wifi_00198845cf8d_434322e3447487a_managed_none
+connmanctl>
+....
++
+
+
+
+					     
+
+
