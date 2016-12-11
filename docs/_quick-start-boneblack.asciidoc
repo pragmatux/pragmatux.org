@@ -1,0 +1,184 @@
+Quick-Start Guide for the Beaglebone Black SBC
+==============================================
+:Author: Bill Gatliff
+:Email: bgat@billgatliff.com
+:Revision: Pre-Release Draft
+
+The following is a brief guide to creating a bootable Pragmatux Device
+filesystem image for the http://beagleboard.org/black[Beaglebone Black
+single-board computer].
+
+Additional support resources for Beagleboard devices, including
+technical documentation, downloads, and mailing lists, are available
+at the http://beagleboard.org[Beagleboard website].
+Pragmatux-specific questions should be directed to the
+http://lists.pragmatux.org[Pragmatux mailing lists].  Pragmatux is not
+affiliated with the Beagleboard project(s).
+
+== Set Up a Pragmatux Workstation
+
+The development environment for creating programs, packages, and
+filesystem images is a desktop, laptop, or server running the Wheezy
+release of the Debian Linux distribution. That environment is called
+the 'workstation'. The Beagleboard Black is hereafter referred to as
+the 'device'.
+
+Pragmatux works seamlessly with 64-bit (amd64) Debian Jessie, and this
+configuration is tested continuously. Your mileage will vary with
+other configurations, but Pragmatux developers routinely report
+success using Pragmatux in a Debian Jessie chroot under Ubuntu LTS,
+VMware virtual machines, etc.  See the
+http:://www.pragmatux.org[Pragmatux website] for more information.
+
+This document assumes you are starting with a pristine Debian
+Jessie installation on an amd64 workstation.
+
+== Add the Pragmatux package repository
+
+Download the following file to your /etc/apt/sources.list.d directory:
+
+    http://www.pragmatux.org/apt-sources-ptux-sdk_all.deb
+
+== Install the development tools for the device
+
+A basic Pragmatux Workstation installation provides a pre-packaged,
+uniform SDK and related tools for supported devices. To install it:
+
+....
+$ sudo dpkg --add-architecture armhf
+$ sudo apt-get update
+$ sudo apt-get install ptux-sdk-boneblack
+....
+
+The above commands install packages containing the tools and code
+libraries essential for cross-development targeting a Pragmatux device
+runtime environment.  If prompted, answer ``yes'' to install some
+packages without authentication.
+
+== Create a device filesystem image
+
+Compose a filesystem using the default set of packages:
+
+....
+$ mkdir boneblack
+$ cd boneblack
+$ sudo fakeroot mkos-boneblack
+....
+
+The above commands create `ptux.img`, a bootable SD card image.
+
+When invoked without arguments, `mkos-<device>` composes a filesystem
+with basic functionality: serial console, SSH server, WiFi support,
+and so on. See the Pragmatux documetation for a list of
+currently-supported target devices.
+
+You can manually add or remove packages on a running device using
+ordinary, Debian package management tools already included in the
+default filesystem.  In addition, by passing additional arguments to
+`mkos-<device>` you can change the features present in the filesystem
+it creates.  Use the `--help` parameter, and/or see the Pragmatux
+documentation for more information.
+
+== Create a bootable SD card
+
+Use an SD card that is at least as large as the `ptux.img` file itself
+(usually about 1GB).  A larger SD card will give you more storage area
+on the device, but not until you resize the filesystem after first
+boot (TODO: instructions forthcoming, see also the `resize2fs (8)`
+manpage).
+
+Use the `dmesg` command, if necessary, to determine what name the
+workstation assigns to your SD card when inserted, i.e. `/dev/sdf`.
+
+Write the image to an SD card:
+
+....
+$ sudo dd bs=1M if=ptux.img of=/dev/sdf conv=fsync
+....
+
+== Boot the device for the first time
+
+Disconnect power from the Beaglebone Black, insert the SD card into
+its card slot, then power up the board while holding the `BOOT` switch
+(the pushbutton closest to the uSD card slot).  Within a few seconds,
+the kernel should boot and write considerable output to the serial
+console (if attached). The very first time the operating system
+starts, it will go through a minute-long installation procedure and
+then automatically restart the board.
+
+
+== Log in as root via serial console
+
+The default password for the root user is "`password`" (omit quotes):
+
+....
+Pragmatux 4.0 device ttyO2
+
+device login: root
+Password: password
+....
+
+
+== Enabling root logins over SSH (optional)
+
+By default, Pragmatux devices permit root logins over SSH only via an
+authorized key. Password-authenticated logins are disabled, and are
+not generally recommended.
+
+=== Authorized-key authentication
+
+To configure root login over SSH via authorized key, add the contents of
+your personal `id_rsa.pub` file to `/root/.ssh/authorized_keys` on the
+device using one of the following means:
+
+* copy/pasting it through the serial console;
+* using `scp` to copy it over the ethernet link, or;
+* mounting the device's SD card on your workstation.
+
+Create the `authorized_keys` file on the device, if it doesn't already exist.
+
+
+=== Password-authenticated logins
+
+To enable password-authenticated root login over SSH, edit `/etc/ssh/sshd_config` as follows.
+
+Find the following line:
+
+....
+PermitRootLogin without-password
+....
+
+Change the above to read as follows:
+
+....
+# PermitRootLogin without-password
+PermitRootLogin yes
+....
+
+Finally, restart the SSH server:
+
+....
+root@device:~# service sshd restart
+....
+
+
+== Finding your device's IP address
+
+By default, Pragmatux devices act as DHCP clients so that a DHCP
+server can assign their network address.  Use the `ip` command at the
+device's serial console to determine what IP address was assigned by
+your DHCP server:
+
+....
+Pragmatux 4.0 device ttyO2
+
+device login: root
+Password: password
+root@device:~# ip addr show eth0
+2: eth0: <...,UP,...>...
+    ...
+    inet 192.168.88.3/24 ...
+    ...
+....
+
+
