@@ -27,7 +27,7 @@ Pragmatux works seamlessly with a native, 64-bit (amd64) Debian host,
 and this configuration is tested continuously. Your mileage will vary
 with other configurations, but Pragmatux developers routinely report
 success using Pragmatux in a chroot under Debian, Ubuntu LTS, VMware
-virtual machines, etc.  See the http:://www.pragmatux.org[Pragmatux
+virtual machines, etc.  See the http://www.pragmatux.org[Pragmatux
 website] for more information.
 
 This document assumes you are starting with a pristine Debian
