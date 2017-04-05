@@ -18,20 +18,20 @@ affiliated with the Beagleboard project(s).
 == Set Up a Pragmatux Workstation
 
 The development environment for creating programs, packages, and
-filesystem images is a desktop, laptop, or server running the Wheezy
+filesystem images is a desktop, laptop, or server running the Jessie
 release of the Debian Linux distribution. That environment is called
 the 'workstation'. The Beagleboard Black is hereafter referred to as
 the 'device'.
 
-Pragmatux works seamlessly with 64-bit (amd64) Debian Jessie, and this
-configuration is tested continuously. Your mileage will vary with
-other configurations, but Pragmatux developers routinely report
-success using Pragmatux in a Debian Jessie chroot under Ubuntu LTS,
-VMware virtual machines, etc.  See the
-http:://www.pragmatux.org[Pragmatux website] for more information.
+Pragmatux works seamlessly with a native, 64-bit (amd64) Debian host,
+and this configuration is tested continuously. Your mileage will vary
+with other configurations, but Pragmatux developers routinely report
+success using Pragmatux in a chroot under Debian, Ubuntu LTS, VMware
+virtual machines, etc.  See the http:://www.pragmatux.org[Pragmatux
+website] for more information.
 
 This document assumes you are starting with a pristine Debian
-Jessie installation on an amd64 workstation.
+installation on an amd64 workstation.
 
 == Add the Pragmatux package repository
 
@@ -62,15 +62,16 @@ Compose a filesystem using the default set of packages:
 ....
 $ mkdir boneblack
 $ cd boneblack
-$ sudo fakeroot mkos-boneblack
+$ fakeroot mkos-boneblack
 ....
 
 The above commands create `ptux.img`, a bootable SD card image.
 
+== Adjusting the device filesystem
+
 When invoked without arguments, `mkos-<device>` composes a filesystem
 with basic functionality: serial console, SSH server, WiFi support,
-and so on. See the Pragmatux documetation for a list of
-currently-supported target devices.
+and so on. 
 
 You can manually add or remove packages on a running device using
 ordinary, Debian package management tools already included in the
@@ -98,7 +99,7 @@ $ sudo dd bs=1M if=ptux.img of=/dev/sdf conv=fsync
 
 == Boot the device for the first time
 
-Disconnect power from the Beaglebone Black, insert the SD card into
+Disconnect power from the device, insert the SD card into
 its card slot, then power up the board while holding the `BOOT` switch
 (the pushbutton closest to the uSD card slot).  Within a few seconds,
 the kernel should boot and write considerable output to the serial
